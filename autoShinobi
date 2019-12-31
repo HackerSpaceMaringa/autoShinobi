@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+HOME=/home/DOCKER_FILES/shinobi
+CONTAINER=$(docker ps -a --filter name=Shinobi -q); 
+
+UpShinobi(){
+	docker run -d \
+	--restart always \
+	--name='Shinobi' \
+	-e 'AUTOHEAL_CONTAINER_LABEL=all' \
+	-e 'APP_BRANCH=dev' \
+	-p '8080:8080/tcp' \
+	--device /dev/video0 \
+	--device /dev/video1 \
+	-v $HOME/shinobiConfig:/config \
+ 	-v $HOME/shinobiCustomAutoLoad:/customAutoLoad \
+  	-v $HOME/shinobiDatabase:/var/lib/mysql \
+  	-v $HOME/shinobiVideos:/opt/shinobi/videos \
+  	shinobisystems/shinobi:latest
+}
+
+if [ -n "$CONTAINER" ]; then
+	docker rm -f $CONTAINER 2>/dev/null 1>/dev/null;
+fi
+
+UpShinobi;
+
+docker exec -it Shinobi bash -c "apt update && apt upgrade -y"&;
