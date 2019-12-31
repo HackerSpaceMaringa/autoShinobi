@@ -24,4 +24,6 @@ fi
 
 UpShinobi;
 
-docker exec -it Shinobi bash -c "apt update && apt upgrade -y"&;
+sleep 30;
+
+docker restart camera_bot;
