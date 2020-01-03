@@ -19,11 +19,9 @@ UpShinobi(){
 }
 
 if [ -n "$CONTAINER" ]; then
-	docker rm -f $CONTAINER 2>/dev/null 1>/dev/null;
+	docker rm -f $CONTAINER 2>&1;
 fi
 
 UpShinobi;
-
-sleep 30;
 
 docker restart camera_bot;
